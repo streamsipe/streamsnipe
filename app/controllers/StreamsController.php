@@ -1,5 +1,7 @@
 <?php
 
+use StreamSnipe\Twitch\Exceptions\TwitchApiTimeoutException;
+
 class StreamsController extends BaseController {
 
 	/**
@@ -11,7 +13,7 @@ class StreamsController extends BaseController {
 	{
 		try
 		{
-			$stream = Twitch::getRandom()
+			$stream = Twitch::getRandom();
 		}
 		catch (TwitchApiTimeoutException $e)
 		{
@@ -19,7 +21,7 @@ class StreamsController extends BaseController {
 			return Response::json(array(
 				'message' 	=> 'Unable to communicate with Twitch servers.',
 				'code'		=> '201',
-			));
+			), 504);
 		}
 
 		return Response::json($this->transformStream($stream));

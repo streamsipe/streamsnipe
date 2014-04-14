@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'pgsql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -65,13 +65,16 @@ return array(
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'host'     => isset($_SERVER['DB1_HOST']) ? $_SERVER['DB1_HOST'] : 'localhost',
+			'database' => isset($_SERVER['DB1_NAME']) ? $_SERVER['DB1_NAME'] : 'localhost',
+			'username' => isset($_SERVER['DB1_USER']) ? $_SERVER['DB1_USER'] : 'localhost',
+			'password' => isset($_SERVER['DB1_PASS']) ? $_SERVER['DB1_PASS'] : 'localhost',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
+			'port'     => '5432',
+         'schema'   => 'public',
+         'options'   => array(PDO::ATTR_PERSISTENT => true,)
 		),
 
 		'sqlsrv' => array(

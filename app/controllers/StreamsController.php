@@ -36,9 +36,19 @@ class StreamsController extends BaseController {
 	 */
 	private function transformStream($stream)
 	{
-		// TODO: Implement the transformation
+		$transformedStream = [
+			'title'		=> $stream['channel']['name'],
+			'streamer'	=> $stream['channel']['display_name'],
+			'game' 		=> $stream['game'],
+			'link'		=> $stream['channel']['url'],
+			'viewers' 	=> $stream['viewers'],
+			'followers'	=> $stream['channel']['followers'],
+			'mature'		=> $stream['channel']['mature'],
+			'preview'	=> $stream['preview']['large'],
+			'logo'		=> $stream['channel']['logo'],
+		];
 		
-		return $stream;
+		return $transformedStream;
 	}
 
 }

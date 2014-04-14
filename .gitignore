@@ -1,8 +1,17 @@
 /bootstrap/compiled.php
 /vendor
+
+# Ignore codeception logs
+/app/tests/_log/*.log
+
+# Ignore composer stuff
 composer.phar
 composer.lock
+
+# Ignore env
 .env.*.php
 .env.php
+
+# Ignore OS files
 .DS_Store
 Thumbs.db

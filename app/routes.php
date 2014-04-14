@@ -11,4 +11,9 @@
 |
 */
 
-Route::get('/', 'StreamsController@random');
+Route::get('/', 'HomeController@showHello');
+
+Route::group(array('prefix' => 'api'), function()
+{
+	Route::get('random', 'StreamsController@random');
+});

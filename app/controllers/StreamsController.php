@@ -26,6 +26,24 @@ class StreamsController extends BaseController {
 
 		return Response::json($this->transformStream($stream));
 	}
+
+	public function filterRandom($filter)
+	{
+		try
+		{
+			$stream = Twitch::getRandom($filter);
+		}
+		catch (TwitchApiTimeoutException $e)
+		{
+			// 2** Error code: External service error.
+			return Response::json(array(
+				'message' 	=> 'Unable to communicate with Twitch servers.',
+				'code'		=> '201',
+			), 504);
+		}
+
+		return Response::json($this->transformStream($stream));
+	}
 	
 	/**
 	 * Transforms the data from the RAW Twitch API to StreamSnipe more 

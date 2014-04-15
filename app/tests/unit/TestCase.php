@@ -2,6 +2,11 @@
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
+	public function tearDown() 
+	{
+    	Mockery::close();
+	}
+
 	/**
 	 * Creates the application.
 	 *

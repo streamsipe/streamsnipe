@@ -1,5 +1,7 @@
 <?php namespace StreamSnipe\Twitch; 
 
+use StreamSnipe\Twitch\Exceptions\TwitchApiTimeoutException;
+use StreamSnipe\Twitch\Exceptions\FailedSearchException;
 use Guzzle\Http\Client;
 
 class TwitchService {
@@ -22,21 +24,33 @@ class TwitchService {
 		{
 			$response = $this->client->get('streams')->send();
 		}
-		$streamCount = $response->json()['_total'];
+
+		if ($response->getStatusCode() != 200) throw new TwitchApiTimeoutException;
 
 		// Generate a random number to selec the stream
-		$streamId = rand(0, $streamCount);
+		$streamCount = $response->json()['_total'];		
+		$streamId = rand(0, $streamCount - 10);
 
 		// Get that stream now!
 		if ($filter)
 		{
-			$response = $this->client->get("search/streams?limit=1&offset=$streamId&q=$filter")->send();			
+			$response = $this->client->get("search/streams?limit=25&offset=$streamId&q=$filter")->send();			
 		}
 		else
 		{
 			$response = $this->client->get("streams?limit=1&offset=$streamId")->send();
 		}
-		$stream = $response->json()['streams'][0];
+
+		if ($response->getStatusCode() != 200) throw new TwitchApiTimeoutException;
+
+		try 
+		{
+			$stream = $response->json()['streams'][0];	
+		} 
+		catch (\ErrorException $e) 
+		{
+			throw new FailedSearchException;
+		}
 
 		return $stream;
 	}

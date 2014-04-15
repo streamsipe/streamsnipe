@@ -1,6 +1,7 @@
 <?php
 
 use StreamSnipe\Twitch\Exceptions\TwitchApiTimeoutException;
+use StreamSnipe\Twitch\Exceptions\FailedSearchException;
 
 class StreamsController extends BaseController {
 
@@ -14,6 +15,13 @@ class StreamsController extends BaseController {
 		try
 		{
 			$stream = Twitch::getRandom();
+		}
+		catch (FailedSearchException $e)
+		{
+			return Response::json(array(
+				'message' 	=> 'Twitch returned an empty search.',
+				'code'		=> '202',
+			), 503);
 		}
 		catch (TwitchApiTimeoutException $e)
 		{
@@ -33,6 +41,13 @@ class StreamsController extends BaseController {
 		{
 			$stream = Twitch::getRandom($filter);
 		}
+		catch (FailedSearchException $e)
+		{
+			return Response::json(array(
+				'message' 	=> 'Twitch returned an empty search.',
+				'code'		=> '202',
+			), 503);
+		}
 		catch (TwitchApiTimeoutException $e)
 		{
 			// 2** Error code: External service error.
@@ -43,6 +58,31 @@ class StreamsController extends BaseController {
 		}
 
 		return Response::json($this->transformStream($stream));
+	}
+
+	private function getRandomStream($filter = null)
+	{
+		try
+		{
+			$stream = Twitch::getsRandom($filter);
+		}
+		catch (FailedSearchException $e)
+		{
+			return Response::json(array(
+				'message' 	=> 'Twitch returned an empty search.',
+				'code'		=> '202',
+			), 503);
+		}
+		catch (TwitchApiTimeoutException $e)
+		{
+			// 2** Error code: External service error.
+			return Response::json(array(
+				'message' 	=> 'Unable to communicate with Twitch servers.',
+				'code'		=> '201',
+			), 504);
+		}
+
+		return $stream;
 	}
 	
 	/**

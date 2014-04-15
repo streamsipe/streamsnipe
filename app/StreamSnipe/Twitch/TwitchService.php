@@ -29,7 +29,7 @@ class TwitchService {
 
 		// Generate a random number to selec the stream
 		$streamCount = $response->json()['_total'];		
-		$streamId = rand(0, $streamCount - 10);
+		$streamId = rand(0, $streamCount);
 
 		// Get that stream now!
 		if ($filter)

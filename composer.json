@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"guzzlehttp/guzzle": "4.0.*",
+		"guzzle/guzzle": "3.8.*",
 		"bugsnag/bugsnag-laravel": "1.0.*"
 	},
 	"require-dev": {
